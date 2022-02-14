@@ -47,3 +47,6 @@ int k_map_all_keys(KMAP *map, char ***keys);
 
 //return number of key/value pairs and fill array of nodes - dont forget free(nodes)
 int k_map_all_nodes(KMAP *map, KMAPNODE ***nodes);
+
+//return the return of callback. Callback stops if not 0 return
+int k_map_foreach_node(KMAP *map, void *user_data, int (*callback)(KMAPNODE *node, void *user_data));

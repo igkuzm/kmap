@@ -201,3 +201,19 @@ int k_map_all_nodes(KMAP *map, KMAPNODE ***_nodes) {
 
 	return i;
 }
+
+int k_list_foreach_node_callback(void *item, void *_user_data){
+	KMAPNODE *node = item;
+	KLIST *list = _user_data;
+	void *user_data = k_list_item_at(list, 0);
+	int (*callback)(KMAPNODE *node, void *user_data) = k_list_item_at(list, 1);
+	return callback(node, user_data);
+}
+
+int k_map_foreach_node(KMAP *map, void *user_data, int (*callback)(KMAPNODE *node, void *user_data)) {
+	KLIST *list = k_list_new();
+	k_list_append_items(list, user_data, callback, NULL);
+	int c = k_list_foreach_item(map, list, k_list_foreach_node_callback);
+	k_list_free(list);
+	return c;
+}
